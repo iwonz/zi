@@ -1,9 +1,47 @@
 {
-  "name": "zi",
+  "name": "@iwonz/zi",
   "version": "1.0.0",
   "description": "Personal swiss knife from useful utils",
-  "main": "index.js",
+  "license": "MIT",
+  "author": "iwonz <iwonz@yandex.ru>",
   "repository": "https://github.com/iwonz/zi",
-  "author": "iwonz",
-  "license": "MIT"
+  "homepage": "https://github.com/iwonz/zi#readme",
+  "bugs": {
+    "url": "https://github.com/iwonz/zi/issues"
+  },
+  "main": "dist/index.js",
+  "bin": {
+    "zi": "./dist/index.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "scripts": {
+    "build": "rimraf ./dist && npx tsc"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "glob": "^10.3.16",
+    "rimraf": "^5.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "eslint": "^9.3.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.4",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  }
 }
