@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import type { GlobOptions } from 'glob';
-import { getDirectoryInfo } from './getDirectoryInfo';
+import { displayDirectoryInfo, getDirectoryInfo } from './getDirectoryInfo';
 
 export const flatDirectory = async (
   pattern: string = '**/*',
@@ -16,6 +16,8 @@ export const flatDirectory = async (
 ) => {
   const directoryInfo = await getDirectoryInfo(pattern, options);
 
+  displayDirectoryInfo(directoryInfo);
+
   if (!fs.existsSync(out)) {
     fs.mkdirSync(out, { recursive: true });
   }
@@ -29,7 +31,7 @@ export const flatDirectory = async (
       const start = i * chunk;
       const end = Math.min((i + 1) * chunk, items.length);
 
-      const chunkFolderName = `${start}_${end - 1}`;
+      const chunkFolderName = `part_${i + 1}`;
       const chunkFolderPath = path.join(out, chunkFolderName);
       if (!fs.existsSync(chunkFolderPath)) {
         fs.mkdirSync(chunkFolderPath, { recursive: true });

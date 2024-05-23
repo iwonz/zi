@@ -1,6 +1,6 @@
 import path from 'path';
 import { Command } from 'commander';
-import { getDirectoryInfo } from '../../utils/getDirectoryInfo';
+import { displayDirectoryInfo, getDirectoryInfo } from '../../utils/getDirectoryInfo';
 import { flatDirectory } from '../../utils/flatDirectory';
 
 export default function (program: Command) {
@@ -20,31 +20,7 @@ export default function (program: Command) {
         ignore: options.ignore,
       });
 
-      if (directoryInfo.items.length) {
-        const exts = directoryInfo.items.reduce((counters, file) => {
-          if (file.type === 'file') {
-            const key = file.ext || 'Without extension';
-
-            if (!counters[key]) {
-              counters[key] = 0;
-            }
-
-            counters[key]++;
-          }
-
-          return counters;
-        }, Object.create(null));
-
-        console.table(directoryInfo.items);
-        console.table(exts);
-        console.table({
-          'Files count': directoryInfo.filesCount,
-          'Directories count': directoryInfo.directoriesCount,
-          'Total count': directoryInfo.items.length,
-        });
-      } else {
-        console.log('Not found...');
-      }
+      displayDirectoryInfo(directoryInfo);
     });
 
   dir
@@ -64,7 +40,7 @@ export default function (program: Command) {
           ignore: options.ignore,
         },
         path.resolve(process.cwd(), output),
-        options.chunk || 0,
+        Number(options.chunk) || 0,
       );
     });
 }
