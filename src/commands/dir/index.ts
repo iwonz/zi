@@ -52,6 +52,7 @@ export default function (program: Command) {
     .description('Flat all files from directory to output directory')
     .option('-p, --pattern <pattern>', 'Glob pattern')
     .option('-i, --ignore <pattern>', 'Glob pattern to ignore')
+    .option('--chunk <chunk>', 'Max files in folder')
     .action(async (directory, output, options) => {
       await flatDirectory(
         options.pattern || '**/*',
@@ -63,6 +64,7 @@ export default function (program: Command) {
           ignore: options.ignore,
         },
         path.resolve(process.cwd(), output),
+        options.chunk || 0,
       );
     });
 }

@@ -12,6 +12,7 @@ export const flatDirectory = async (
     dot: true,
   },
   out: string = path.resolve(process.cwd(), `_output_${Math.random() * Number.MAX_SAFE_INTEGER}`),
+  chunk = 0,
 ) => {
   const directoryInfo = await getDirectoryInfo(pattern, options);
 
@@ -19,9 +20,30 @@ export const flatDirectory = async (
     fs.mkdirSync(out, { recursive: true });
   }
 
-  directoryInfo.items.forEach((file) => {
-    if (file.type === 'file') {
-      fs.copyFileSync(file.path, path.join(out, path.basename(file.path)));
+  const items = directoryInfo.items.filter((file) => file.type === 'file');
+
+  if (chunk > 0) {
+    const totalChunks = Math.ceil(items.length / chunk);
+
+    for (let i = 0; i < totalChunks; i++) {
+      const start = i * chunk;
+      const end = Math.min((i + 1) * chunk, items.length);
+
+      const chunkFolderName = `${start}_${end - 1}`;
+      const chunkFolderPath = path.join(out, chunkFolderName);
+      if (!fs.existsSync(chunkFolderPath)) {
+        fs.mkdirSync(chunkFolderPath, { recursive: true });
+      }
+
+      items.slice(start, end).forEach((file) => {
+        if (file.type === 'file') {
+          fs.copyFileSync(file.path, path.join(chunkFolderPath, path.basename(file.path)));
+        }
+      });
     }
-  });
+  } else {
+    items.forEach((file) => {
+      fs.copyFileSync(file.path, path.join(out, path.basename(file.path)));
+    });
+  }
 };

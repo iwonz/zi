@@ -1,6 +1,6 @@
 {
   "name": "@iwonz/zi",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Personal swiss knife from useful utils",
   "license": "MIT",
   "author": "iwonz <iwonz@yandex.ru>",
@@ -25,7 +25,8 @@
     ]
   },
   "scripts": {
-    "build": "rimraf ./dist && npx tsc"
+    "build": "rimraf ./dist && npx tsc",
+    "postinstall": "chmod +x ./dist/index.js"
   },
   "dependencies": {
     "commander": "^12.1.0",
