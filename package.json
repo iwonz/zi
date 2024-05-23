@@ -1,0 +1,9 @@
+{
+  "name": "zi",
+  "version": "1.0.0",
+  "description": "Personal swiss knife from useful utils",
+  "main": "index.js",
+  "repository": "https://github.com/iwonz/zi",
+  "author": "iwonz",
+  "license": "MIT"
+}
